@@ -9,14 +9,22 @@ cloudinary.config({
 
 var app = express();
 
-app.get('/upload',function (req, res) {
-	var name = req.imagename;
+app.post('/upload',function (req, res) {
+	var name = req.body.imagepath;
 	console.log(name);
-	cloudinary.uploader.upload("abc.jpg", function (result) {
+	cloudinary.uploader.upload(name, function (result) {
 		console.log(result.result_id);
 		res.send(result.public_id);
 	});
 });
+
+app.post('/uploadwithid',function (req, res) {
+	var name = req.body.imagepath;
+	var id = req.body.public_id;
+	cloudinary.uploader.upload(name, function (result) {
+		res.send(result);
+	}, {public_id : id});
+})
 
 app.get('/display', function (req, res) {
 	console.log('I am trying to display an image');
