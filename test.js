@@ -8,26 +8,32 @@ cloudinary.config({
 });
 
 var app = express();
+app.set('view engine', 'ejs');
+
+app.get('/',function (req, res) {
+	res.render('pages/index');
+});
 
 app.post('/upload',function (req, res) {
-	var name = req.body.imagepath;
-	console.log(name);
-	cloudinary.uploader.upload(name, function (result) {
+	//var name = req.body.imagepath;
+	//console.log(name);
+	cloudinary.uploader.upload('./public/images/abc.jpg', function (result) {
 		console.log(result.result_id);
 		res.send(result.public_id);
 	});
 });
 
 app.post('/uploadwithid',function (req, res) {
-	var name = req.body.imagepath;
-	var id = req.body.public_id;
-	cloudinary.uploader.upload(name, function (result) {
+	//var name = req.body.imagepath;
+	//var id = req.body.public_id;
+	cloudinary.uploader.upload('./public/images/abc.jpg', function (result) {
 		res.send(result);
-	}, {public_id : id});
+	}, {public_id : 'sample_image'});
 })
 
 app.get('/display', function (req, res) {
 	console.log('I am trying to display an image');
+	res.render('pages/showimage');
 
 });
 
